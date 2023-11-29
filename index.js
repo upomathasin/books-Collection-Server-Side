@@ -6,20 +6,14 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
-const books = [];
-
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // const uri = `mongodb+srv://${process.env.SECRET_USERNAME}:${process.env.SECRET_PASSWORD}@cluster0.zlotju8.mongodb.net/?retryWrites=true&w=majority`;
 const uri = process.env.MONGOURI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
+const client = new MongoClient(uri);
+app.get("/", (req, res) => {
+  res.send("Server is running .");
 });
-
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -28,6 +22,7 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     const database = client.db("booksDb");
     const bookCollection = database.collection("collection");
+
     app.post("/books/:addedBy", async (req, res) => {
       books.push(req.body);
       console.log(req.body);
@@ -43,9 +38,7 @@ async function run() {
       //console.log(result);
       res.send(result);
     });
-    app.get("/", (req, res) => {
-      res.send({ name: "upoma" });
-    });
+
     app.get("/books/:addedBy/:id", async (req, res) => {
       const addedBy = req.params.addedBy;
       const id = req.params.id;
