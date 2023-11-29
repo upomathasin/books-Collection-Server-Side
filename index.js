@@ -1,15 +1,16 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
 const app = express();
+dotenv.config();
 app.use(express.json());
 app.use(cors());
 
 const books = [];
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const uri = `mongodb+srv://${process.env.SECRET_USERNAME}:${process.env.SECRET_PASSWORD}@cluster0.zlotju8.mongodb.net/?retryWrites=true&w=majority`;
-
+// const uri = `mongodb+srv://${process.env.SECRET_USERNAME}:${process.env.SECRET_PASSWORD}@cluster0.zlotju8.mongodb.net/?retryWrites=true&w=majority`;
+const uri = process.env.MONGOURI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
