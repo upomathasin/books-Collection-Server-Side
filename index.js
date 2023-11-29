@@ -24,7 +24,6 @@ async function run() {
     const bookCollection = database.collection("collection");
 
     app.post("/books/:addedBy", async (req, res) => {
-      books.push(req.body);
       console.log(req.body);
 
       const result = await bookCollection.insertOne(req.body);
